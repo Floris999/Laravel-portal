@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'heading' => 'Gebruikers',
+    'subheading' => 'Bekijk gebruikers en wijzig hun rol.',
+    'role' => 'Rol',
+    'current_user' => 'Je eigen rol',
+    'self_role' => 'Je kunt je eigen rol niet wijzigen.',
+    'last_admin' => 'De rol van de laatste Admin kan niet worden gewijzigd.',
+    'updated' => 'De rol van :name is gewijzigd naar :role.',
+    'delete' => 'Account verwijderen',
+    'delete_confirmation_heading' => 'Account verwijderen?',
+    'delete_confirmation_description' => 'Weet je zeker dat je het account van :name wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt. Voer je eigen wachtwoord in om te bevestigen.',
+    'confirm_delete' => 'Account verwijderen',
+    'self_delete' => 'Je kunt je eigen account niet verwijderen.',
+    'last_admin_delete' => 'Het account van de laatste Admin kan niet worden verwijderd.',
+    'select_user_to_delete' => 'Selecteer eerst een account om te verwijderen.',
+    'deleted' => 'Het account van :name is verwijderd.',
+    'create_user_heading' => 'Nieuwe gebruiker aanmaken',
+    'create_user_button' => 'Gebruiker aanmaken',
+    'create_user_email' => 'E-mailadres',
+    'create_user_password' => 'Wachtwoord',
+    'create_user_password_confirm' => 'Wachtwoord bevestigen',
+    'created' => 'De gebruiker :name is aangemaakt.',
+    'email_exists' => 'Dit e-mailadres bestaat al.',
+];

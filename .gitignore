@@ -1,0 +1,41 @@
+/node_modules
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+.env
+.env.backup
+.env.production.local
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+auth.json
+npm-debug.log
+yarn-error.log
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.env.*.php
+local/
+.php-cs-fixer.cache
+.phpstan.result.cache
+
+# Database
+*.sqlite
+*.sqlite-journal
+database/database.sqlite
+
+# Logs
+storage/logs/*
+!storage/logs/.gitkeep
+
+# Local development
+.php_cs.cache
+.idea/
+.vscode/
+*.iml
+.env.dusk.local
+/public/fonts-manifest.dev.json
