@@ -10,4 +10,5 @@ return [
     'uninvoiced' => 'Ongefactureerde registraties',
     'synced_invoices' => 'Facturen gesynct met Moneybird',
     'view' => 'Bekijken',
+    'customer_locations' => 'Klanten Locaties',
 ];

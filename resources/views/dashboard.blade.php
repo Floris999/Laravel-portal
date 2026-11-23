@@ -18,7 +18,7 @@
         <!-- Customer Map -->
         @if($customers->isNotEmpty())
         <div class="rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-700 dark:bg-zinc-900">
-            <flux:heading size="lg" class="mb-4">{{ __('Klanten Locaties') }}</flux:heading>
+            <flux:heading size="lg" class="mb-4">{{ __('dashboard.customer_locations') }}</flux:heading>
             
             <div id="customer-map" style="height: 400px; width: 100%; background-color: #fff; border-radius: 0.5rem; border: 1px solid #e4e4e7;"></div>
         </div>

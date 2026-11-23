@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'platform' => 'Platform',
     'dashboard' => 'Dashboard',
     'customers' => 'Klanten',
     'customers_overview' => 'Alle klanten',
