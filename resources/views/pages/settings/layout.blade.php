@@ -11,11 +11,11 @@
                 <flux:navlist.item :href="route('products.manage')" wire:navigate>
                     {{ __('settings.products.heading') }}
                 </flux:navlist.item>
-                <flux:navlist.item :href="route('moneybird.edit')" wire:navigate>
-                    {{ __('settings.moneybird.heading') }}
-                </flux:navlist.item>
                 <flux:navlist.item :href="route('categories.manage')" wire:navigate>
                     {{ __('settings.categories.title') }}
+                </flux:navlist.item>
+                <flux:navlist.item :href="route('moneybird.edit')" wire:navigate>
+                    {{ __('settings.moneybird.heading') }}
                 </flux:navlist.item>
             @endcan
         </flux:navlist>
