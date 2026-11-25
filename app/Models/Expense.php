@@ -13,6 +13,7 @@ use Illuminate\Support\Carbon;
  * @property int $customer_id
  * @property int $user_id
  * @property int|null $invoice_id
+ * @property int|null $category_id
  * @property Carbon $spent_on
  * @property string $description
  * @property string|null $attachment_path
@@ -30,6 +31,7 @@ use Illuminate\Support\Carbon;
     'customer_id',
     'user_id',
     'invoice_id',
+    'category_id',
     'spent_on',
     'description',
     'attachment_path',
@@ -94,5 +96,13 @@ class Expense extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return BelongsTo<Category, $this>
+     */
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 }

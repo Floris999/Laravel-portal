@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Expense;
 use Illuminate\Contracts\View\View;
@@ -20,6 +21,7 @@ class FinancialExpenseController extends Controller
         return view('financial.expense', [
             'expense' => null,
             'customers' => Customer::query()->where('active', true)->orderBy('name')->get(['id', 'name']),
+            'categories' => Category::query()->where('active', true)->orderBy('name')->get(['id', 'name']),
         ]);
     }
 
@@ -52,6 +54,8 @@ class FinancialExpenseController extends Controller
 
         return view('financial.expense', [
             'expense' => $expense->load('customer'),
+            'customers' => Customer::query()->where('active', true)->orderBy('name')->get(['id', 'name']),
+            'categories' => Category::query()->where('active', true)->orderBy('name')->get(['id', 'name']),
         ]);
     }
 
@@ -107,6 +111,7 @@ class FinancialExpenseController extends Controller
             'attachment' => ['nullable', 'file', 'mimes:jpg,jpeg,gif,png,pdf', 'max:10240'],
             'amount' => ['required', 'numeric', 'min:0.01', 'max:99999999', 'decimal:0,2'],
             'vat_rate' => ['required', 'integer', Rule::in([21, 9, 0])],
+            'category_id' => ['nullable', Rule::exists('categories', 'id')->where('active', true)],
         ];
     }
 

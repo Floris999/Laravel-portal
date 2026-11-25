@@ -19,6 +19,7 @@ This template is built on a proven foundation and includes:
   - Search and sorting
 - **Queue-Based Operations:** Background job processing for integrations
 - **API Integration Ready:** Structured for external service integrations
+- **Categories System:** Sync accounting categories from external services and assign them to products/expenses
 
 ## Tech Stack
 

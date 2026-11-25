@@ -133,20 +133,8 @@ class MoneybirdService
 
         $details = $invoice->registrations
             ->sortBy('worked_on')
-            ->map(fn(Registration $registration) => [
-                'description' => $this->lineDescription($registration),
-                'amount' => (string) (float) $registration->hours,
-                'price' => $registration->hourly_rate,
-                'tax_rate_id' => $taxRateIds[$registration->vat_rate]
-                    ?? throw new RuntimeException("No Moneybird sales tax rate found for {$registration->vat_rate}%."),
-            ])
-            ->concat($invoice->expenses->sortBy('spent_on')->map(fn(Expense $expense) => [
-                'description' => "{$expense->description} - {$expense->spent_on->format('d-m-Y')}",
-                'amount' => '1',
-                'price' => $expense->amount,
-                'tax_rate_id' => $taxRateIds[$expense->vat_rate]
-                    ?? throw new RuntimeException("No Moneybird sales tax rate found for {$expense->vat_rate}%."),
-            ]))
+            ->map(fn(Registration $registration) => $this->registrationDetail($registration, $taxRateIds))
+            ->concat($invoice->expenses->sortBy('spent_on')->map(fn(Expense $expense) => $this->expenseDetail($expense, $taxRateIds)))
             ->values()
             ->all();
 
@@ -167,6 +155,40 @@ class MoneybirdService
         }
 
         return (string) $invoiceId;
+    }
+
+    private function registrationDetail(Registration $registration, array $taxRateIds): array
+    {
+        $detail = [
+            'description' => $this->lineDescription($registration),
+            'amount' => (string) (float) $registration->hours,
+            'price' => $registration->hourly_rate,
+            'tax_rate_id' => $taxRateIds[$registration->vat_rate]
+                ?? throw new RuntimeException("No Moneybird sales tax rate found for {$registration->vat_rate}%."),
+        ];
+
+        if ($registration->product->category_id) {
+            $detail['ledger_account_id'] = $registration->product->category->moneybird_id;
+        }
+
+        return $detail;
+    }
+
+    private function expenseDetail(Expense $expense, array $taxRateIds): array
+    {
+        $detail = [
+            'description' => "{$expense->description} - {$expense->spent_on->format('d-m-Y')}",
+            'amount' => '1',
+            'price' => $expense->amount,
+            'tax_rate_id' => $taxRateIds[$expense->vat_rate]
+                ?? throw new RuntimeException("No Moneybird sales tax rate found for {$expense->vat_rate}%."),
+        ];
+
+        if ($expense->category_id) {
+            $detail['ledger_account_id'] = $expense->category->moneybird_id;
+        }
+
+        return $detail;
     }
 
     /**

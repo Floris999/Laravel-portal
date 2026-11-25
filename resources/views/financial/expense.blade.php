@@ -65,6 +65,15 @@
                 :placeholder="__('financial.expense.description_placeholder')"
                 :value="old('description', $expense?->description)" maxlength="255" required />
 
+            <flux:select name="category_id" :label="__('financial.expense.category')">
+                <flux:select.option value="">-</flux:select.option>
+                @foreach ($categories as $category)
+                    <flux:select.option :value="$category->id" :selected="old('category_id', $expense?->category_id) == $category->id">
+                        {{ $category->name }}
+                    </flux:select.option>
+                @endforeach
+            </flux:select>
+
             <flux:input type="file" name="attachment" :label="__('financial.expense.attachment')"
                 accept=".jpg,.jpeg,.gif,.png,.pdf" />
             <flux:text size="sm">{{ __('financial.expense.attachment_help') }}</flux:text>

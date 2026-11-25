@@ -49,6 +49,7 @@ return [
         'attachment' => 'Bijlage (bonnetje)',
         'attachment_help' => 'jpg, jpeg, gif, png of pdf en maximaal 10MB.',
         'amount' => 'Bedrag',
+        'category' => 'Categorie',
         'attachment_current' => 'Er is al een bijlage. Kies een nieuw bestand om deze te vervangen.',
         'edit_title' => 'Uitgave wijzigen',
         'edit_heading' => 'Uitgave wijzigen',
