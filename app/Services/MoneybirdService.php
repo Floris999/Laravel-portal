@@ -18,6 +18,7 @@ class MoneybirdService
 {
     /**
      * Fetch categories from Moneybird and sync them to the database.
+     * Only syncs revenue categories (ledger accounts).
      *
      * @return int Number of categories synced
      */
@@ -31,6 +32,10 @@ class MoneybirdService
         $synced = 0;
 
         foreach ($categories as $category) {
+            if ($category['account_type'] !== 'revenue') {
+                continue;
+            }
+
             $categoryId = (string) $category['id'];
 
             Category::updateOrCreate(

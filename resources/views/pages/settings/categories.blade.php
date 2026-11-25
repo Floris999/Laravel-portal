@@ -50,12 +50,11 @@ new #[Title('Categorieën')] class extends Component {
             @else
                 <div class="overflow-hidden rounded-lg border border-zinc-200">
                     <table class="w-full text-sm">
-                        <thead class="border-b border-zinc-200 bg-zinc-50">
+                        <thead class="border-b border-zinc-200 bg-zinc-900 text-white">
                             <tr>
                                 <th class="px-4 py-3 text-left font-semibold">{{ __('settings.categories.name') }}</th>
                                 <th class="px-4 py-3 text-left font-semibold">{{ __('settings.categories.type') }}</th>
                                 <th class="px-4 py-3 text-left font-semibold">{{ __('settings.categories.account_id') }}</th>
-                                <th class="px-4 py-3 text-center font-semibold">{{ __('settings.categories.active') }}</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-zinc-200">
@@ -68,13 +67,6 @@ new #[Title('Categorieën')] class extends Component {
                                         </span>
                                     </td>
                                     <td class="px-4 py-3 text-zinc-500">{{ $category->account_id ?? '-' }}</td>
-                                    <td class="px-4 py-3 text-center">
-                                        @if ($category->active)
-                                            <span class="inline-flex h-2 w-2 rounded-full bg-green-500"></span>
-                                        @else
-                                            <span class="inline-flex h-2 w-2 rounded-full bg-zinc-300"></span>
-                                        @endif
-                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
