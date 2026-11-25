@@ -147,6 +147,7 @@ class FinancialExpenseController extends Controller
             'amount_excl_vat' => $amountExclVat,
             'vat_amount' => $vatAmount,
             'amount_incl_vat' => $amountInclVat,
+            'category_id' => $validated['category_id'] ?? null,
         ];
     }
 
