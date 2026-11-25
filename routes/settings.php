@@ -15,6 +15,9 @@ Route::middleware(['auth'])->group(function () {
     Route::livewire('settings/moneybird', 'pages::settings.moneybird')
         ->middleware('can:manage-users')
         ->name('moneybird.edit');
+    Route::livewire('settings/categories', 'pages::settings.categories')
+        ->middleware('can:manage-users')
+        ->name('categories.manage');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {

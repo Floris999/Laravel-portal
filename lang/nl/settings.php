@@ -126,4 +126,18 @@ return [
             'unexpected' => 'Moneybird gaf een onverwachte reactie (:status).',
         ],
     ],
+    'categories' => [
+        'title' => 'Categorieën',
+        'heading' => 'Categorieën',
+        'subheading' => 'Beheer de boekhoudkundige categorieën van Moneybird',
+        'description' => 'Synchroniseer categorieën van Moneybird',
+        'name' => 'Categorienaam',
+        'type' => 'Type',
+        'account_id' => 'Rekeningnummer',
+        'active' => 'Actief',
+        'update_button' => 'Categorieën bijwerken',
+        'synced' => ':count categorieën gesynchroniseerd',
+        'error' => 'Fout bij synchroniseren: :error',
+        'no_categories' => 'Geen categorieën beschikbaar. Klik op "Categorieën bijwerken" om deze op te halen.',
+    ],
 ];

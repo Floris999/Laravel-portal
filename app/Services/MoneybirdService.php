@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Expense;
 use App\Models\Invoice;
@@ -15,6 +16,40 @@ use UnexpectedValueException;
 
 class MoneybirdService
 {
+    /**
+     * Fetch categories from Moneybird and sync them to the database.
+     *
+     * @return int Number of categories synced
+     */
+    public function syncCategories(): int
+    {
+        [$request, $administrationId] = $this->connection();
+
+        $response = $request->get("{$administrationId}/ledger_accounts.json")->throw();
+        $categories = $response->json();
+
+        $synced = 0;
+
+        foreach ($categories as $category) {
+            $categoryId = (string) $category['id'];
+
+            Category::updateOrCreate(
+                ['moneybird_id' => $categoryId],
+                [
+                    'name' => $category['name'],
+                    'account_type' => $category['account_type'],
+                    'account_id' => $category['account_id'] ?? null,
+                    'active' => $category['active'],
+                    'taxonomy_item' => $category['taxonomy_item'] ?? null,
+                ]
+            );
+
+            $synced++;
+        }
+
+        return $synced;
+    }
+
     /**
      * Check whether the configured API token and administration ID give access to Moneybird.
      *
