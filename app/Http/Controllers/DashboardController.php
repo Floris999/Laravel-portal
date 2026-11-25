@@ -21,7 +21,7 @@ class DashboardController extends Controller
             'customerCount' => Customer::count(),
             'supplierCount' => Supplier::count(),
             'uninvoicedCount' => Registration::uninvoiced()->where('billable', true)->count() + Expense::uninvoiced()->where('billable', true)->count(),
-            'syncedInvoiceCount' => Invoice::withTrashed()->where('status', InvoiceStatus::Synced->value)->count(),
+            'syncedInvoiceCount' => Invoice::where('status', InvoiceStatus::Synced->value)->count(),
             'customers' => Customer::where('active', true)->whereNotNull('latitude')->whereNotNull('longitude')->get(['id', 'name', 'latitude', 'longitude', 'address', 'phone', 'email']),
         ]);
     }
