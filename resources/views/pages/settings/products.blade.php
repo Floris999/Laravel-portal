@@ -3,37 +3,66 @@
 
     <flux:heading level="2" class="sr-only">{{ __('settings.products.title') }}</flux:heading>
 
-    <x-pages::settings.layout :heading="__('settings.products.heading')" :subheading="__('settings.products.subheading')">
+    <x-pages::settings.layout :heading="__('settings.products.heading')" :subheading="__('settings.products.subheading')" wide>
         <div class="my-6 w-full space-y-6">
-            <div class="flex items-center justify-between">
-                <flux:heading size="lg">{{ __('settings.products.list_title') }}</flux:heading>
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                    <flux:heading size="lg">{{ __('settings.products.list_title') }}</flux:heading>
+                    <flux:text size="sm">{{ __('settings.products.count', ['count' => $this->products->count()]) }}</flux:text>
+                </div>
                 <flux:button variant="primary" wire:click="openCreateModal">
                     {{ __('settings.products.add_product') }}
                 </flux:button>
             </div>
 
+            <div class="flex flex-col gap-3 sm:flex-row">
+                <div class="flex-1">
+                    <flux:input
+                        wire:model.live.debounce.300ms="search"
+                        type="search"
+                        icon="magnifying-glass"
+                        :placeholder="__('settings.products.search')"
+                        clearable
+                    />
+                </div>
+                <div class="sm:w-56">
+                    <flux:select wire:model.live="categoryFilter">
+                        <option value="">{{ __('settings.products.all_categories') }}</option>
+                        <option value="none">{{ __('settings.products.uncategorized') }}</option>
+                        @foreach ($this->categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </flux:select>
+                </div>
+            </div>
+
             @if ($this->products->isEmpty())
-                <flux:text>{{ __('settings.products.no_products') }}</flux:text>
+                <flux:text>
+                    {{ $this->hasActiveFilters ? __('settings.products.no_results') : __('settings.products.no_products') }}
+                </flux:text>
             @else
-                <div class="divide-y divide-neutral-200 dark:divide-neutral-700">
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-2 2xl:grid-cols-3">
                     @foreach ($this->products as $product)
-                        <div class="flex items-center justify-between py-3">
-                            <div class="flex-1">
-                                <div class="font-medium text-neutral-900 dark:text-neutral-100">
-                                    {{ $product->name }}
-                                </div>
-                                <div class="text-sm text-neutral-600 dark:text-neutral-400">
-                                    € {{ number_format($product->hourly_rate, 2, ',', '.') }}
+                        <div wire:key="product-{{ $product->id }}" class="flex flex-col justify-between gap-4 rounded-xl border border-neutral-200 p-4 dark:border-neutral-700">
+                            <div class="space-y-2">
+                                <div class="flex items-start justify-between gap-3">
+                                    <div class="font-medium text-neutral-900 dark:text-neutral-100">
+                                        {{ $product->name }}
+                                    </div>
+                                    <div class="shrink-0 text-right">
+                                        <div class="font-semibold text-neutral-900 dark:text-neutral-100">
+                                            € {{ number_format($product->hourly_rate, 2, ',', '.') }}
+                                        </div>
+                                        <div class="text-xs text-neutral-500 dark:text-neutral-400">{{ __('settings.products.per_hour') }}</div>
+                                    </div>
                                 </div>
                                 @if ($product->category)
-                                    <div class="mt-2">
-                                        <span class="inline-flex rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
-                                            {{ $product->category->name }}
-                                        </span>
-                                    </div>
+                                    <span class="inline-flex rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                                        {{ $product->category->name }}
+                                    </span>
                                 @endif
                             </div>
-                            <div class="flex items-center gap-2">
+                            <div class="flex items-center justify-end gap-2 border-t border-neutral-200 pt-3 dark:border-neutral-700">
                                 <flux:button size="sm" variant="ghost" wire:click="openEditModal({{ $product->id }})">
                                     {{ __('settings.products.edit') }}
                                 </flux:button>
@@ -188,15 +217,29 @@ new #[Title('Producten')] class extends Component {
     #[Validate('nullable|exists:categories,id')]
     public ?int $category_id = null;
 
+    public string $search = '';
+
+    public string $categoryFilter = '';
+
     public function mount(): void
     {
         $this->authorize('manage-users');
     }
 
     #[Computed]
+    public function hasActiveFilters(): bool
+    {
+        return trim($this->search) !== '' || $this->categoryFilter !== '';
+    }
+
+    #[Computed]
     public function products()
     {
         return Product::query()
+            ->with('category')
+            ->when(trim($this->search) !== '', fn ($query) => $query->where('name', 'like', '%'.trim($this->search).'%'))
+            ->when($this->categoryFilter === 'none', fn ($query) => $query->whereNull('category_id'))
+            ->when(ctype_digit($this->categoryFilter), fn ($query) => $query->where('category_id', (int) $this->categoryFilter))
             ->orderBy('name')
             ->get();
     }
