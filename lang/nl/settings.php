@@ -131,6 +131,7 @@ return [
         'heading' => 'Categorieën',
         'subheading' => 'Beheer de boekhoudkundige categorieën van Moneybird',
         'description' => 'Synchroniseer categorieën van Moneybird',
+        'label' => 'Categorie',
         'name' => 'Categorienaam',
         'type' => 'Type',
         'account_id' => 'Rekeningnummer',

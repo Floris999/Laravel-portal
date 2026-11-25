@@ -10,10 +10,11 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property string $name
  * @property string $hourly_rate
+ * @property int|null $category_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['name', 'hourly_rate'])]
+#[Fillable(['name', 'hourly_rate', 'category_id'])]
 class Product extends Model
 {
     /**
@@ -26,5 +27,10 @@ class Product extends Model
         return [
             'hourly_rate' => 'decimal:2',
         ];
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }

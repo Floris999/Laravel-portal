@@ -25,6 +25,13 @@
                                 <div class="text-sm text-neutral-600 dark:text-neutral-400">
                                     € {{ number_format($product->hourly_rate, 2, ',', '.') }}
                                 </div>
+                                @if ($product->category)
+                                    <div class="mt-2">
+                                        <span class="inline-flex rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                                            {{ $product->category->name }}
+                                        </span>
+                                    </div>
+                                @endif
                             </div>
                             <div class="flex items-center gap-2">
                                 <flux:button size="sm" variant="ghost" wire:click="openEditModal({{ $product->id }})">
@@ -68,6 +75,16 @@
                     required
                 />
 
+                <flux:select
+                    wire:model="category_id"
+                    :label="__('settings.categories.label')"
+                    placeholder="{{ __('Selecteer een categorie (optioneel)') }}"
+                >
+                    @foreach ($this->categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
+                </flux:select>
+
                 <div class="flex justify-end gap-3">
                     <flux:modal.close>
                         <flux:button variant="ghost">{{ __('settings.common.cancel') }}</flux:button>
@@ -104,6 +121,16 @@
                     required
                 />
 
+                <flux:select
+                    wire:model="category_id"
+                    :label="__('settings.categories.label')"
+                    placeholder="{{ __('Selecteer een categorie (optioneel)') }}"
+                >
+                    @foreach ($this->categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
+                </flux:select>
+
                 <div class="flex justify-end gap-3">
                     <flux:modal.close>
                         <flux:button variant="ghost">{{ __('settings.common.cancel') }}</flux:button>
@@ -137,6 +164,7 @@
 <?php
 
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
@@ -157,6 +185,9 @@ new #[Title('Producten')] class extends Component {
     #[Validate('required|numeric|min:0.01')]
     public string $hourly_rate = '';
 
+    #[Validate('nullable|exists:categories,id')]
+    public ?int $category_id = null;
+
     public function mount(): void
     {
         $this->authorize('manage-users');
@@ -166,6 +197,15 @@ new #[Title('Producten')] class extends Component {
     public function products()
     {
         return Product::query()
+            ->orderBy('name')
+            ->get();
+    }
+
+    #[Computed]
+    public function categories()
+    {
+        return Category::query()
+            ->where('active', true)
             ->orderBy('name')
             ->get();
     }
@@ -187,6 +227,7 @@ new #[Title('Producten')] class extends Component {
         $this->editingProductId = $product->id;
         $this->name = $product->name;
         $this->hourly_rate = (string) $product->hourly_rate;
+        $this->category_id = $product->category_id;
         $this->showEditModal = true;
     }
 
@@ -240,6 +281,7 @@ new #[Title('Producten')] class extends Component {
     {
         $this->name = '';
         $this->hourly_rate = '';
+        $this->category_id = null;
         $this->editingProductId = null;
         $this->resetErrorBag();
     }
