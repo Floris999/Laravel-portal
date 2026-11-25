@@ -11,7 +11,6 @@ return [
     'remember_me' => 'Onthoud mij',
     'login_button' => 'Inloggen',
     'forgot_password' => 'Wachtwoord vergeten?',
-    'no_account' => 'Heb je nog geen account?',
     'sign_up' => 'Registreren',
     'register_title' => 'Registreren',
     'register_heading' => 'Maak een account aan',

@@ -50,9 +50,5 @@
                 </flux:button>
             </div>
         </form>
-
-        <div class="space-x-1 text-sm text-center rtl:space-x-reverse text-zinc-600 dark:text-zinc-400">
-            <span>{{ __('auth.no_account') }}</span>
-        </div>
     </div>
 </x-layouts::auth>
