@@ -110,7 +110,7 @@ class ImportCustomersFromMoneybirdTest extends TestCase
     public function test_it_imports_l_numbered_contacts_as_suppliers_and_keeps_their_number(): void
     {
         $this->fakeContacts([
-            ['id' => '9001', 'customer_id' => 'L00012', 'company_name' => 'Leverancier BV', 'address1' => 'Industrieweg 5', 'city' => 'Zwolle', 'country' => 'NL', 'email' => 'l@l.test', 'created_at' => '2024-01-10T08:00:00.000Z'],
+            ['id' => '9001', 'customer_id' => 'L12', 'company_name' => 'Leverancier BV', 'address1' => 'Industrieweg 5', 'city' => 'Zwolle', 'country' => 'NL', 'email' => 'l@l.test', 'created_at' => '2024-01-10T08:00:00.000Z'],
             ['id' => '9002', 'customer_id' => '7', 'company_name' => null],
             ['id' => '9003', 'customer_id' => '8', 'company_name' => 'Echte Klant', 'email' => 'k@k.test'],
             ['id' => '9004', 'customer_id' => 'L00001', 'company_name' => 'Zonder mail', 'country' => 'DE'],
@@ -121,7 +121,7 @@ class ImportCustomersFromMoneybirdTest extends TestCase
         $this->assertSame(['Echte Klant'], Customer::pluck('name')->all());
 
         $supplier = Supplier::findOrFail(12);
-        $this->assertSame('L00012', $supplier->supplier_number);
+        $this->assertSame('L12', $supplier->supplier_number);
         $this->assertSame('Leverancier BV', $supplier->name);
         $this->assertSame('9001', $supplier->moneybird_contact_id);
         $this->assertSame('2024-01-10', $supplier->supplier_since->toDateString());

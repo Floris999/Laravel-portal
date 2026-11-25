@@ -21,8 +21,8 @@ class MoneybirdSupplierSyncTest extends TestCase
         $first = Supplier::factory()->create();
         $second = Supplier::factory()->create();
 
-        $this->assertSame('L00001', $first->supplier_number);
-        $this->assertSame('L00002', $second->supplier_number);
+        $this->assertSame('L1', $first->supplier_number);
+        $this->assertSame('L2', $second->supplier_number);
     }
 
     public function test_it_sends_the_supplier_number_to_moneybird_as_customer_id(): void

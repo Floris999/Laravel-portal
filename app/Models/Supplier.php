@@ -40,8 +40,6 @@ class Supplier extends Model
 
     public const NUMBER_PREFIX = 'L';
 
-    public const NUMBER_LENGTH = 5;
-
     /**
      * Get the attributes that should be cast.
      *
@@ -56,10 +54,10 @@ class Supplier extends Model
     }
 
     /**
-     * The supplier number (L00001, L00002, ...), derived from the ascending primary key.
+     * The supplier number (L1, L2, ..., L145), derived from the ascending primary key without zero padding.
      */
     public function getSupplierNumberAttribute(): string
     {
-        return self::NUMBER_PREFIX . str_pad((string) $this->id, self::NUMBER_LENGTH, '0', STR_PAD_LEFT);
+        return self::NUMBER_PREFIX . $this->id;
     }
 }
